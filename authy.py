@@ -18,7 +18,6 @@ class Auth:
 	"""
 	def __init__(self):
 
-		
 		self.loginCount = 0 # to keep login requests low
 		self.check_auth()
 		print("\033[0m") # Revert to default terminal color
