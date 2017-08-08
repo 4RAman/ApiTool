@@ -7,7 +7,6 @@
 		for statuses other than 200 - exit with status code + content
 
 """
-
 import json
 import ReqVars
 import time
@@ -19,23 +18,24 @@ class Auth:
 	"""
 	def __init__(self):
 
+		
 		self.loginCount = 0 # to keep login requests low
 		self.check_auth()
+		print("\033[0m") # Revert to default terminal color
 
 	def check_auth(self):
 		""" 
 			This pulls authorization values from file
 		"""
-		print ("===Authorization===========")
+
+		print ("Checking Authorization")
 		#print ("Auth String: " + ReqVars.headers["Authorization"])
 
 		_parsed = ReqVars.headers["Authorization"].split(";")
 		_exp_time = int(_parsed[2]) + 1800
 		_now = int(time.time())
+		_time_diff = _exp_time - _now
 
-
-		print("Expires: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_exp_time)))
-		print("Currently: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_now)))
 
 		if 'user_device_id' not in ReqVars.auth_body.keys():
 			print("No Device ID - Reverifying Device")
@@ -44,18 +44,26 @@ class Auth:
 			print("need some additional programming for initial setup")
 			# Should go to login then set up device???
 
-		if _exp_time <= _now:
+		if _exp_time <= (_now + 120): # add 2 minutes, so auth doesn't interrupt workflow
+			print("\033[93m") # Set terminal color for authy messages
+			print("Expired: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_exp_time)))
+			print("Currently: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_now)))
+
 			if _parsed[4] == "PT30M":
+				
 				ReqVars.headers["Authorization"] = ReqVars._login_auth
 				print("Auth Expired")
+				input("< Push Enter to re-authorize >")
 				self.login()
 		else:
-			print("Authy still valid - Skipping re-authorization\n")
+			print("\033[94m") # Set terminal color for authy messages
+			print("Authy still valid for: " + time.strftime('%H:%M:%S', time.gmtime(_time_diff)))
 
 	def login(self):
 		"""
 			Initial Login. Checks Device ID and re-verifies if necessary
 		"""
+
 		self.loginCount += 1 # of login attempts per session
 
 		if self.loginCount == 3:
@@ -67,10 +75,11 @@ class Auth:
 		print(r.content)
 
 		if r.status_code == 200:
+			print("\033[92m") # Set terminal color for authy messages
 			ReqVars.headers["Authorization"] = r.json()["authorization"]
 			with open(ReqVars._header_file, "w") as file:
 				json.dump(ReqVars.headers, file)
-				print("\nFinished writing auth to file.\n")
+				print("\nFinished writing auth to file.")
 
 		elif r.status_code == 401:
 			print("unauthorized")
@@ -80,6 +89,7 @@ class Auth:
 			print(r.status_code)
 			print(r.content)
 
+			
 	def setup_device(self):
 		print("Initial Device Setup")
 		_sendMethod = "sms"
@@ -109,5 +119,3 @@ class Auth:
 			Look for the one labeled Support Python Requests\n\
 			Then append it to your api.json file under device_id...\n\
 			 I was too lazy to program this part myself")
-
-Auth()
