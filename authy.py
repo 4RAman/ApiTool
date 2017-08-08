@@ -39,7 +39,7 @@ class Auth:
 			print("No Device ID - Reverifying Device")
 			self.setup_device()
 		else: 
-			print("Something is not programmed that should be.")
+			print("Device ID OK")
 			# Should go to login then set up device???
 
 		if _parsed[4] == "PT30M":
@@ -65,7 +65,7 @@ class Auth:
 		"""
 
 		self.loginCount += 1 # of login attempts per session
-
+		print("Login attempt: " + self.loginCount)
 		if self.loginCount == 3:
 			print("Too many login authentications this session. Goodbye")
 			exit()
@@ -116,6 +116,7 @@ class Auth:
 		r = requests.post(ReqVars.verifydevice, headers=ReqVars.headers, data=_form)
 		print(r.content)
 		print("Now run a 'User Devices' request in Postman to get your Device ID\n"
+			"GET /users/[your_user_id]/devices"
 			"Look for the one labeled Support Python Requests\n"
 			"Then append it to your api.json file as device_id ...\n"
 			 "I was too lazy to program this part myself")

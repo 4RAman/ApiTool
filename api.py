@@ -25,9 +25,10 @@ class GetRequest:
 			print(r.status_code)
 			print(r.content)
 
-	def userByEmail(emailAddress):
+	def userByEmail(emailAddress): 
 		# The info here is not useful to display unless it fails
 		#so this just grabs the UUID and runs a more helpful userByID request
+		# Although, this can return multiple UUIDs, but I hope the first one is usually the right one
 
 		r = requests.get(ReqVars.base_url + "/users/search?email_address=" + emailAddress, headers=ReqVars.headers)
 		
@@ -45,11 +46,15 @@ class GetRequest:
 		_first_name = _full_name[0]
 		_last_name = _full_name[1]
 
-		r = requests.get(ReqVars.base_url + "/users/search?first_name=" + _first_name + "\
-&last_name=" + _last_name, headers=ReqVars.headers)
+		r = requests.get(ReqVars.base_url + "/users/search?first_name=" 
+		"" + _first_name + ""
+		"&last_name=" + _last_name, headers=ReqVars.headers)
 		
 		if r.status_code == 200:
-			return(Chosen.userID)
+			for item in r.json()["items"]:
+				Chosen.userID = item["user_id"]
+				userInfo = GetRequest.userByID(Chosen.userID)
+			return(userInfo)
 		else:
 			print(r.status_code)
 			print(r.content)

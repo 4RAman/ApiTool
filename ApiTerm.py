@@ -55,6 +55,10 @@ class show_user_info:
 		merchantID = list()
 		publisherID = list()
 
+		# Eventually save this as a key : val dict, rather than str
+		# then print the key + value
+		# This will let you fetch specific information later.
+
 		userString = ("\n\033[94m====USER INFO===="
 		"" + userInfo["first_name"] + " "
 		"" + userInfo["last_name"] + "\n"
