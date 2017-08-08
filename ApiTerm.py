@@ -55,18 +55,19 @@ class show_user_info:
 		merchantID = list()
 		publisherID = list()
 
-		userString = userInfo["first_name"] + " "
-		userInfo["last_name"] + "\n"
+		userString = ("\n\033[94m====USER INFO===="
+		"" + userInfo["first_name"] + " "
+		"" + userInfo["last_name"] + "\n"
 		"UUID: " + userInfo["user_id"] + "\n"
 		"Email: " + userInfo["email_address"] + "\n"
 		"Created: " + userInfo["created_at"] + "\n"
 		"Updated: " + userInfo["updated_at"] + "\n"
-		"MFA: " + str(userInfo["mfa"]
+		"MFA: " + str(userInfo["mfa"]) + "\n"
+		"=================\033[0m"
 		)
-		print("\n\033[94m====USER INFO====")
+		
 		print(userString)
-		#print(userInfo)
-		print("=================\033[0m")
+
 		self.userMenu()
 
 	def userMenu(self):
