@@ -57,7 +57,7 @@ class Auth:
 				self.login()
 		else:
 			print("\033[94m") # Set terminal color for authy messages
-			print("Authy still valid for: " + time.strftime('%H:%M:%S', time.gmtime(_time_diff)))
+			print("Authy still valid for: " + time.strftime('%H:%M:%S', time.gmtime(_time_diff))+ "\n" )
 
 	def login(self):
 		"""
