@@ -11,7 +11,7 @@ This README would normally document whatever steps are necessary to get your app
 
 * Copy api.json.default to api.json - and edit api.json to match your info
 * From terminal, run: python3 ApiTerm.py - This will alert you of missing dependencies. Please note these down so we can write an installation file in the future.
-* The authentication works but 
+* The authentication works but you'll need to use postman to grab the device ID - You will be prompted to do so in terminal
 
 ### Contribution guidelines ###
 
