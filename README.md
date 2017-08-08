@@ -4,26 +4,22 @@ This README would normally document whatever steps are necessary to get your app
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Version 0.1.0
+* For AvantLink support to interact with the API in an efficient way
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Copy api.json.default to api.json - and edit api.json to match your info
+* From terminal, run: python3 ApiTerm.py - This will alert you of missing dependencies. Please note these down so we can write an installation file in the future.
+* The authentication works but 
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Don't break it. 
+* Don't Share it with outsiders.
+* api.py holds requests and returns the data - ApiTerm.py is the terminal interface. Let's keep it this way.
+* Feel free to design new interfaces, or make changes as you see fit. Make sure it works on your local machine before committing.
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* You know who to talk to!
