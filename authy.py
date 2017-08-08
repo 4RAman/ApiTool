@@ -34,29 +34,30 @@ class Auth:
 		_exp_time = int(_parsed[2]) + 1800
 		_now = int(time.time())
 		_time_diff = _exp_time - _now
-
-
-		if _parsed[4] == "PT100Y":
-			if 'user_device_id' not in ReqVars.auth_body.keys():
-				print("No Device ID - Reverifying Device")
-				self.setup_device()
-			else: 
-				print("Something is not programmed that should be.")
+		
+		if 'user_device_id' not in ReqVars.auth_body.keys():
+			print("No Device ID - Reverifying Device")
+			self.setup_device()
+		else: 
+			print("Something is not programmed that should be.")
 			# Should go to login then set up device???
 
-		elif _parsed[4] == "PT30M":
+		if _parsed[4] == "PT30M":
 			if _exp_time <= (_now + 120): # add 2 minutes, so auth doesn't interrupt workflow
 				print("\033[93m") # Set terminal color for authy messages
 				print("Expired: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_exp_time)))
 				print("Currently: " + time.strftime('%m/%d %H:%M:%S', time.gmtime(_now)))
 
-			ReqVars.headers["Authorization"] = ReqVars._login_auth
-			print("Auth Expired")
-			input("< Push Enter to re-authorize >")
-			self.login()
+				ReqVars.headers["Authorization"] = ReqVars._login_auth
+				print("Auth Expired")
+				input("< Push Enter to re-authorize >")
+				self.login()
+			else: 
+				print("\033[94m") # Set terminal color for authy messages
+				print("Authy still valid for: " + time.strftime('%H:%M:%S', time.gmtime(_time_diff))+ "\n" )
 		else:
-			print("\033[94m") # Set terminal color for authy messages
-			print("Authy still valid for: " + time.strftime('%H:%M:%S', time.gmtime(_time_diff))+ "\n" )
+			print("something is wrong with your auth string.")
+			exit()
 
 	def login(self):
 		"""
@@ -114,7 +115,7 @@ class Auth:
 		_form = {"verification_code": _vCode, "device_nickname": "Support_Python_Requests"}
 		r = requests.post(ReqVars.verifydevice, headers=ReqVars.headers, data=_form)
 		print(r.content)
-		print("Now run a 'User Devices' request in Postman to get your Device ID\n\
-			Look for the one labeled Support Python Requests\n\
-			Then append it to your api.json file under device_id...\n\
-			 I was too lazy to program this part myself")
+		print("Now run a 'User Devices' request in Postman to get your Device ID\n"
+			"Look for the one labeled Support Python Requests\n"
+			"Then append it to your api.json file as device_id ...\n"
+			 "I was too lazy to program this part myself")
