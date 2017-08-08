@@ -65,7 +65,7 @@ class Auth:
 		"""
 
 		self.loginCount += 1 # of login attempts per session
-		print("Login attempt: " + self.loginCount)
+		print("Login attempt: " + str(self.loginCount))
 		if self.loginCount == 3:
 			print("Too many login authentications this session. Goodbye")
 			exit()
