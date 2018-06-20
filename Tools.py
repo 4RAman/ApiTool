@@ -136,7 +136,7 @@ class admin_search:
 
 	def account_search(searchString):
 
-		url = ReqVars._baseURL + "/login/search/" + searchString + "/any/any/"
+		url = ReqVars._baseURL + "/login/search/" + searchString + "/any/any"
 		r = requests.get(url , headers=ReqVars.headers)
 
 		return(r)
