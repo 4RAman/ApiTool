@@ -7,14 +7,6 @@ This README would normally document whatever steps are necessary to get your app
 
 
 
-
-
-
-
-
-
-
-
 ### How do I get set up? ###
 
 * Copy api.json.default to api.json - and edit api.json to match your info
@@ -26,11 +18,9 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Contribution guidelines ###
 
-* Don't break it. 
+* Execution wrapper is in __main__.py
 
-* Don't Share it with outsiders.
-
-* Feel free to add your own menu items and tools.
+* Main Menu is stored in ApiTerm.py - I have temporarily abandoned this, although, it will be nice for things like 2fa resets, outage estimates, etc.
 
 
 ### Who do I talk to? ###

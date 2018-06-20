@@ -363,6 +363,11 @@ class outage_estimate:
 		self.today = time.strftime("%I:%M:%S")
 
 
+	#
+	#
+	# INSTRUCTIONS UNCLEAR - DICK STUCK IN SPREADSHEET
+	#
+
 
 # class classic_reports:
 

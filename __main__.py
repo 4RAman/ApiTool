@@ -26,7 +26,7 @@ Designed by Tony Aman &copy; 2018
 
 """
 import ApiTerm # This is where the main menu is stored.
-from colorama import Style  # So I can shut off ugly colors before exiting.
+from colorama import *  # So I can shut off ugly colors before exiting.
 from authy import Auth
 import Tools
 import json
@@ -37,11 +37,14 @@ while True:
 	try:
 		Auth()
 		
-		result = Tools.admin_search.validateInput(input("search $>"))
+		search = input(Fore.YELLOW + "search>")
+		print(Style.RESET_ALL)
 		
-		print(json.dumps(result,indent=2))
 
+		result = Tools.admin_search.validateInput(search)
+		print(json.dumps(result,indent=2))
 		
+
 
 # Hides Keyboard interrupt exceptions from ctrl^C - more room for USEFUL DATA 
 
