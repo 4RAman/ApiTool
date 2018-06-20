@@ -1,147 +1,123 @@
 """
 	The Terminal Interface for the Python Api Tool
 """
-import api
-from authy import Auth
-import Chosen
+
+# Program imports
+from authy import Auth # To Authorize Through Authy, Authentically.
+import Tools # This is where the tools are kept.
+
+# 3rd party imports (A.K.A Dependencies )
+from colorama import * #NowInTechnaColor
 import json
+import sys
+import os
+import Toolkit
+
+
+class conf:
+	redo = '0'
+	selectro = 'x'
 
 class TheMenu:
+
 	"""
 		A typed menu for terminal API sessions - Type numbers on your keyboard to select Menu Options
 	"""
+
 	def __init__(self):
-		print("\n=======Request Responsibly!=======\n"
-		"Remember to select menu options by number."
-		)
+		
 		Auth()
 		self.mainMenu()
-		print("\033[0m") # Set terminal color to default
+		conf.redo = input(Fore.YELLOW + "< [R/r] to Restart [Enter] to Continue >\n" + Fore.RESET )
 
-	def mainMenu(self):
-		_selectro = input ("\033[92m"
-			"Where to begin?\n"
-			"1. User By ID \n"
-			"2. Email Search \n"
-			"3. Name Search \n"
-			"4. Merchant By ID \n"
-			"5. Affiliate By ID \n> "
-		)
-		if _selectro == "1":
-			Chosen.user_id = input("Enter User ID: ")
-			user_info = api.GetRequest.userByID(Chosen.user_id)
-			ShowInfo.userInfo(user_info)
 
-		elif _selectro == "2":
-			Chosen.email_address = input("Enter Email Address: ")
-			user_info = api.GetRequest.userByEmail(Chosen.email_address)
-			ShowInfo.userInfo(user_info)
+	def mainMenu(self): 
+		"""
+		The Main Menu does exactly what it sounds like.
+		Displays a menu, and lets a user make a selection
 
-		elif _selectro == "3":
-			Chosen.user_name = input("Enter a first & last name (separated by space plz)")
-			user_info = api.GetRequest.userByName(Chosen.user_name)
-			ShowInfo.userInfo(user_info)
+		Add new menu items to the list below - add new Tools to Tools.py 
+		If new Tools are added, please follow the Class structure in Tools.py
 
-		elif _selectro == "4":
-			Chosen.merchant_id = input("Enter a Merchant ID: ")
-			merchant_info = api.GetRequest.merchantById(Chosen.merchant_id)
-			ShowInfo.merchantInfo(merchant_info)
+		"""
 
-		elif _selectro == "5":
-			Chosen.publisher_id = input("Enter Affiliate ID: ")
-			publisherInfo = api.GetRequest.userByName(Chosen.publisher_id)
-			ShowInfo.affiliateInfo(publisher_info)		
+		menuItems = [
+
+			{
+		
+			'name':'Admin Search',
+			'funct':'Tools.admin_search.validateInput(input("search >"))'
+		
+			},{
+		
+			'name':'CopyPasta List',
+			'funct':'Tools.copypasta_list()'
+		
+			},{
+		
+			'name':'Help',
+			'funct':'help("modules")'
+		
+			}
+		]
+
+		# Passes through previous value, if user has chosen to restart
+
+		if conf.redo == 'r' or conf.redo == "R": 
+			print("Restarting Menu Item: " + conf.selectro)
+
+		# Prints the menu
 
 		else:
-			print("What did you say?")
+			selectro = conf.selectro
+			print (
+			Fore.GREEN + 
+			'=== MAIN MENU ==================\n')
 
-	def userMenu():
-		_selectro = input("\033[92mWhat would you like to do with this?\n"
-			"1. View User Accounts\n"
-			"2. Delete MFA"
-			"3. Update User"
-			"2. Go To Main Menu\n> "
-		)
+			for key,val in enumerate(menuItems):
+				print(str(key) + " : " + val['name'])
 
-		if _selectro == "1":
-			account_info = api.GetRequest.userAccounts(Chosen.userID)
-			ShowInfo.userAccounts(account_info)
+			print('\n================================='
+			+ Fore.WHITE + "\n")
 
-		elif _selectro == "2":
-			TheMenu()
-		elif _selectro == "3":
-			user_id = input("user ID")
-			api.PostRequest.updateUser(user_id)			
-		else: 
-			print("What did you say?")
+		# Get user selection and passes to select_o_matic
 
-	def merchantMenu(self):
-		_selectro = input("\033[92mWhat would you like to do with this?\n"
-			"1. View Users\n"
-			"2. Go To Main Menu\n> "
-		)
-		if _selectro == "1":
-			account_info = api.GetRequest.userAccounts(Chosen.userID)
-			ShowInfo.userAccounts(account_info)
-
-		elif _selectro == "2":
-			TheMenu()
-
-		else: 
-			print("What did you say?")
-
-	def affiliateMenu(self):
-		_selectro = input("\033[92mWhat would you like to do with this?\n"
-			"1. View Users\n"
-			"2. Go To Main Menu\n> "
-		)
-		if _selectro == "1":
-			account_info = api.GetRequest.userAccounts(Chosen.user_id)
-			ShowInfo.userAccounts(account_info)
-
-		elif _selectro == "2":
-			TheMenu()
-
-		else: 
-			print("What did you say?")
+		selectro = input("")
+		self.select_o_matic(selectro, menuItems)
 
 
-class ShowInfo:
+	def select_o_matic(self, selectro, menuItems):
+		"""	
+		
+		The select_o_matic function is perfect for parsing a user's input 
+		and running the function stored in the menuItems variable
 
-	def userInfo(req_data):
-		if req_data == 0:
-			print("no User found by email")
-		elif req_data.status_code == 200:
-			Chosen.user_id = req_data.json()["user_id"]
-			print(json.dumps(req_data.json(), indent=2, separators=(',\033[94m', ':\033[92m ')))
-			TheMenu.userMenu()
+		If the option is not in the dict, it's already handled. 
+		The menu will restart and everything will be fine.
+		
+		Try it out today for a selector switch with capabilities like no other,
+		and watch the beauty of plug & play menu items.
+		
+		"""
+		if selectro.isdigit():
+			conf.selectro == selectro
+			if int(selectro) < len(menuItems):
+
+				# eval is what runs the function from the menuItems dict
+
+				response = eval(menuItems[int(selectro)]['funct'])
+
+				print(json.dumps(response,indent=1))
+			else:
+				print(str(selectro) + ' is not yet an option')
+
+		# Other options
+		elif selectro.lower() == "x":
+			exit()
+		
+		elif selectro.lower() == "r":
+			print("retrying")
+			exit()
+
 		else:
-			print("Something Went Wrong. Details below")
-			print(str(req_data.status_code) + user_info)
-
-	def userAccounts(account_info):
-		print("\033[94m") # Set terminal color
-		i=0
-
-		print(json.dumps(account_info))
-		# for item in account_info:
-		# 	print("item: " + str(i))
-		# 	i = int(i) + 1
-
-		# 	print(item["entity_group_name"][:-1].title() + ": "
-		# 	"" + item["entity_name"] + ""
-		# 	"\nNetwork: " + item["entity_network"] + "\n"
-		# 	"Classic ID:" + str(item["classic_entity_id"]) + "\n"
-		# 	"2.0 ID: " + item["entity_id"]
-		# 	)
-
-	def merchantInfo(merchant_info):
-		print(merchant_info)
-
-	def affiliateInfo(affiliate_info):
-		print(affiliate_info)
-
-
-while True:
-	TheMenu()
-	input("\033[93m< press Enter to Restart >\033[0m")
+			print(Fore.RED + "That\'s not an option... Yet." + Fore.RESET)
