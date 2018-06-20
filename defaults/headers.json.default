@@ -1,1 +1,1 @@
-{"Content-Type": "application/x-www-form-urlencoded", "Authorization": "16c6d5f6d513408133bd05ae7ebbdfd3d958842c;68f23373c01bcc29ffee0811d917b62e2f8313be;1529468571;e574512d-1faf-4687-8bba-05c84d636f87;PT30M", "device_id": "6ecb6d0d-66d3-42ef-a797-1c7614a6f14e", "X-API-Version": "2"}
+{"Content-Type": "application/x-www-form-urlencoded", "Authorization": "AUTHORIZATION STRING", "device_id": "DEVICE ID", "X-API-Version": "2"}
