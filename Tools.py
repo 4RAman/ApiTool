@@ -344,7 +344,6 @@ class copypasta_list:
 		return(data)
 
 
-
 class outage_estimate:
 	""" 
 	This will automatically build outage estimates.
