@@ -39,12 +39,15 @@ while True:
 		
 		search = input(Fore.YELLOW + "search>")
 		print(Style.RESET_ALL)
-		
-
-		result = Tools.admin_search.validateInput(search)
-		print(json.dumps(result,indent=2))
-		
-
+		if search == 'switch':
+			selectedClass = input(Fore.CYAN + "select class>")
+			selectedMethod = input(Fore.CYAN + "select method>")
+			methodToUse = getattr(getattr(Tools, selectedClass), selectedMethod)
+			search = input(Fore.YELLOW + methodToUse.__name__ + ">")
+			result = methodToUse(search)
+		else:
+			result = Tools.admin_search.validateInput(search)
+			print(json.dumps(result, indent=2))
 
 # Hides Keyboard interrupt exceptions from ctrl^C - more room for USEFUL DATA 
 

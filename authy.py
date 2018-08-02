@@ -22,7 +22,7 @@ class Auth:
 	"""
 	def __init__(self):
 
-		self.loginCount = 0 # to keep login requests low
+		self.loginCount = 0  # to keep login requests low
 		self.check_auth()
 
 
@@ -32,13 +32,15 @@ class Auth:
 			This pulls authorization values from file and 
 			determines if re-auth is needed
 		"""
-		#DEBUGprint ("Auth String: " + ReqVars.headers["Authorization"])
+		# DEBUG print ("Auth String: " + ReqVars.headers["Authorization"])
 
 		_parsed = ReqVars.headers["Authorization"].split(";")
+		if len(_parsed) < 3:
+			_expired = int(time.time()) - 1800
+			_parsed = [0, 0, _expired, 0, "PT30M"]
 		_exp_time = int(_parsed[2]) + 1800
 		_now = int(time.time())
 		_time_diff = _exp_time - _now
-		
 
 		# If there is no device ID, we need to get one
 		
@@ -50,8 +52,7 @@ class Auth:
 		
 		else: 
 			if _parsed[4] == "PT30M":
-				if _exp_time <= (_now + 300): # add 5 minutes, so auth doesn't interrupt workflow
-
+				if _exp_time <= (_now + 300):  # add 5 minutes, so auth doesn't interrupt workflow
 
 					print(
 						Fore.RED + Style.BRIGHT + 
@@ -61,7 +62,7 @@ class Auth:
 					
 					ReqVars.headers["Authorization"] = ReqVars._login_auth
 
-					#print("Auth Expired")
+					# print("Auth Expired")
 					input("< Push Enter to re-authorize >" + Style.RESET_ALL)
 
 					self.login()
@@ -72,7 +73,6 @@ class Auth:
 				exit()
 		return
 
-
 	def login(self):
 
 		"""
@@ -81,10 +81,9 @@ class Auth:
 
 		_auth = ReqVars.auth_body
 		_auth["password"] = getpass.getpass("Dashboard Password")
-
 		r = requests.post(ReqVars._baseURL + "/login", headers=ReqVars.headers, data=_auth)
 		
-		print(json.dumps(r.json(),indent=1))
+		print(json.dumps(r.json(), indent=1))
 
 		if r.status_code == 200:
 
@@ -107,7 +106,6 @@ class Auth:
 			print(r.content)
 
 		return	
-			
 
 	def setup_device(self):
 		
