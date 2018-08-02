@@ -17,7 +17,8 @@ _login_auth = "6b7998db49cfe3e3e83aaa5a3a88d4b2d34e92c7;e7cd433a66cf708fdc723fce
 
 
 # Persistant memory for various authorization info
-_filepath = os.getcwd() + "/"
+_filepath = os.path.dirname(os.path.realpath(__file__)) + "/"
+
 _auth_file = _filepath + "api.json"
 _header_file = _filepath + "headers.json"
 _baseURL = "https://api.avantlink.com"
